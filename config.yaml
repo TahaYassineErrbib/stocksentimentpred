@@ -1,0 +1,44 @@
+project:
+  name: bigdata-tsla
+  timezone: UTC
+
+data:
+  ticker: TSLA
+  start_years_back: 2
+  interval: 1d
+  time_window: 1D   # keep parameterized; later can become 1H
+
+reddit:
+  subreddits:
+    - wallstreetbets
+    - stocks
+  keywords:
+    - TSLA
+    - $TSLA
+    - Tesla
+  limit_per_subreddit: 500
+
+mongo:
+  uri: mongodb://localhost:27017
+  db: bigdata_stock
+  collections:
+    price_raw: price_raw
+    social_raw: social_raw
+    features: features
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  raw_prices_csv: data/raw/tsla_prices.csv
+  raw_reddit_jsonl: data/raw/reddit_tsla_posts.jsonl
+
+modeling:
+  target: direction_next_day
+  lookback_days: 30
+kafka:
+  bootstrap: localhost:9092
+  topic_reddit: reddit_tsla
+  topic_price: price_tsla
+
+streaming:
+  refresh_seconds: 60
